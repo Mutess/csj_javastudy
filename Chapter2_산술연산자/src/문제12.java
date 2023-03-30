@@ -7,18 +7,16 @@ public class 문제12 {
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.print
-		("뺄값을 입력하세요 : ");
+		("뺄값과 곱할 값을 입력하세요 : ");
 		int i = scan.nextInt();
 		int j = scan.nextInt();
 	
 		int miner = i - j;
-		
+		int cro = i * j;
 		System.out.println("뺼셈 결과는 : " + miner);
 		
-		System.out.print("곱셈 결과는 : ");
-		int cro = i * j;
+		System.out.print("곱셈 결과는 : " + cro);
 		
-		System.out.print(cro);
 		
 		
 	
