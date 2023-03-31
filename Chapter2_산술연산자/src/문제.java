@@ -118,7 +118,7 @@ public class 문제 {
 //		System.out.printf("%d * %d + %d = %d", a, b, c, a*b+c);
 		
 		//문제 14번
-		Scanner scan = new Scanner(System.in);
+		var s = new Scanner(System.in);
 		int a, b;
 		a = (int)(Math.random()*100)+1;
 		b = (int)(Math.random()*100)+1;

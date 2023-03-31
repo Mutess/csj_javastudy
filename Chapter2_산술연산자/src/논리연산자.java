@@ -49,8 +49,8 @@ public class 논리연산자 {
 //		int a = 10;
 //		int b = 9;
 //		
-//		boolean bCheck = (a<b) && ++b == a; //앞에가 false라서 연산안함
-//		boolean cCheck = (a<b) || ++b == a;
+//		boolean bCheck = (a<b) && ++b == a; //앞에가 false라서 연산안함 // 그래서 b = 9로 값이 바뀌지 않음
+//		boolean cCheck = (a<b) || ++b == a; //앞에서 false라서 연산함 // 그래서 b = 10로 값이 변경됨
 //		System.out.println(bCheck);
 //		System.out.println("b= " + b);
 		
@@ -63,7 +63,7 @@ public class 논리연산자 {
 		bCheck = (a>b || b==a);
 		System.out.println(bCheck); */
 		
-		/*char c = (char)((Math.random()*26)+65);
+		/*char c = (char)((Math.random()*26)+65); 
 		boolean bCheck = c >= 'A' && c<='Z'; //c값이 A~Z사이에 들어있는지 물어보는 예제
 		System.out.println("c=" + c);
 		System.out.println(bCheck); 
