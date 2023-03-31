@@ -12,7 +12,7 @@ public class 문제6 {
 		if (i == 0) {
 			ab = (char)((Math.random()*26)+65);
 			//System.out.println(ab + "는 대문자입니다.");
-		}
+		
 		else if (i == 1) {
 			ab = (char)((Math.random()*26)+97);
 			//System.out.println(ab + "는 소문자입니다.");
@@ -24,7 +24,7 @@ public class 문제6 {
 		}else {
 			System.out.println(ab+ "소문자입니다.");
 		}
-		
+		}
 		
 		}
 		
