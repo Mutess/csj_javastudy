@@ -17,7 +17,7 @@ public class 문제6 {
 			ab = (char)((Math.random()*26)+97);
 			//System.out.println(ab + "는 소문자입니다.");
 			
-		if (ab>='A' && ab <= 'Z') {
+		/*if (ab>='A' && ab <= 'Z') {
 			System.out.println(ab + "대문자입니다");
 			
 		
@@ -29,9 +29,9 @@ public class 문제6 {
 		}
 		
 >>>>>>> refs/remotes/origin/master
+		}*/
+		
 		}
-		
-		
 		
 		
 	}
