@@ -3,6 +3,9 @@
  */
 import java.util.Scanner;
 
+
+
+
 public class 단일조건문2 {
 
 	public static void main(String[] args) {
