@@ -2,6 +2,7 @@
  *   3개의 정수를 입력받아서 총점 / 평균 / 학점을 출력
  */
 import java.util.Scanner;
+
 public class 단일조건문2 {
 
 	public static void main(String[] args) {
