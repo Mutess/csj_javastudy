@@ -24,6 +24,11 @@ public class 문제6 {
 		}else {
 			System.out.println(ab+ "소문자입니다.");
 		}
+<<<<<<< HEAD
+=======
+		}
+		
+>>>>>>> refs/remotes/origin/master
 		}
 		
 		
