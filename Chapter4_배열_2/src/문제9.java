@@ -20,7 +20,7 @@ public class 문제9 {
 		}
 		System.out.println("총점은 : " + total);
 		System.out.printf("평균은 : %.2f\n", total/10.0);
-		System.out.printf("%.2f\n", 89.398);
+//		System.out.printf("%.2f\n", 89.398);
 	}
 
 }

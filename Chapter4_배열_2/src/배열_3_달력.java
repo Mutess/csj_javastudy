@@ -31,7 +31,7 @@ public class 배열_3_달력 {
 				   +(year-1) / 4 
 				   -(year-1) / 100
 				   +(year-1) / 400;
-		//2. 전달까지의 합
+		//2. 지난달까지의 합
 		for (int  i = 0; i < month-1; i++) {
 			total = lastday[i];
 		}
