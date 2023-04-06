@@ -27,7 +27,7 @@ public class 배열_3_달력 {
 			lastday[1] = 28;
 		}
 		//1. 1년도 1월 1일 ~ 전년도까지의 총날수
-		int total = (year-1)*365 
+		int total = (year-1) * 365 
 					+(year-1) / 4
 					-(year-1) / 100  //100년마다 제외
 					+(year-1) / 400;
@@ -35,25 +35,14 @@ public class 배열_3_달력 {
 		for (int  i = 0; i < month-1; i++) {
 			total = lastday[i];
 		}
-		total += day;
+		total++;
+		//total += day;
 		//3. 요일구하기
 		int week = total % 7;
 		
 		System.out.printf("%d년도 %d월 %d일은 %c요일입니다.\n", year, month, day, strWeek[week]);
 		
-		for(int i = 1;i <= lastday[month-1]; i++) { //int i = 1인 이유는 한칸을 뛰고 출력해야하기 떄문 month -1 인 이유는
-			if(i == 1) {
-				for (int j = 0; j < week; j++) {
-					System.out.print("\t");
-				}
-			}
-			System.out.printf("%2d\t",i);
-			week++;
-			if(week > 6) {
-				System.out.println();
-				week=0; //다음줄 출력
+		
 	}
 
-}
-}
 }
