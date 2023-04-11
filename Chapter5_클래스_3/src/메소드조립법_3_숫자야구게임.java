@@ -94,6 +94,7 @@ public class 메소드조립법_3_숫자야구게임 {
 	
 
 	public static void main(String[] args) {
+		process();
 /*		int[] com = new int[3];
 		int[] user = new int[3];
 		
