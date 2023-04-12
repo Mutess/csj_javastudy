@@ -53,7 +53,23 @@ public class 메소드조립법_3_숫자야구게임 {
 				System.out.println("0을 사용할 수 없습니다.");
 				continue;
 		}
-			
+				int s=hint(com, user);
+	        	if(end(s))
+	        	{
+	        		System.out.print("게임을 다시할까요?(y/n):");
+	        		char c=scan.next().charAt(0);
+	        		if(c=='y')
+	        		{
+	        			System.out.println("새 게임을 시작합니다!!");
+	        			process();
+	        		}
+	        		else
+	        		{
+	        			System.out.println("게임을 종료합니다!!");
+	        			System.exit(0);
+	        		}
+	        	}
+				
 	}
 		
 }
@@ -72,6 +88,9 @@ public class 메소드조립법_3_숫자야구게임 {
 								}
 							}
 					}
+						System.out.printf("Input:%d%d%d,Result:%dS-%dB\n",
+				    			user[0],user[1],user[2],s,b);
+						
 						return s;
 						
 		}
