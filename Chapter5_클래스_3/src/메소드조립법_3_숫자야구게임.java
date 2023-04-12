@@ -52,7 +52,8 @@ public class 메소드조립법_3_숫자야구게임 {
 			if (user[0] == 0 || user[1] == 0 || user[2] == 0) {
 				System.out.println("0을 사용할 수 없습니다.");
 				continue;
-		}
+			}
+			
 				int s=hint(com, user);
 	        	if(end(s))
 	        	{
@@ -74,6 +75,7 @@ public class 메소드조립법_3_숫자야구게임 {
 		
 }
 		static int hint(int[] com, int[] user) {
+			
 			int s = 0, b = 0; // s = 같은 자리의 같은 숫자가 있음 ,,, b = 다른 자리에 정답인 숫자가 어딘가에 있음
 						
 						for (int i = 0; i < 3; i++) { //com
@@ -89,7 +91,7 @@ public class 메소드조립법_3_숫자야구게임 {
 							}
 					}
 						System.out.printf("Input:%d%d%d,Result:%dS-%dB\n",
-				    			user[0],user[1],user[2],s,b);
+				    			user[0],user[1],user[2],s,b); 
 						
 						return s;
 						
