@@ -23,7 +23,7 @@ public class 메소드조립법_2_달력 {
 	int[] lastDay = {31, 28, 31, 30, 31, 30,
 					31, 31, 30, 31, 30, 31};
 	
-	if ((year % 4 == 0 && year % 100 != 0)|| (year % 400 ==0)) {
+	if ((year % 4 == 0 && year % 100 != 0)|| (year % 400 == 0)) {
 		lastDay[1] = 29;
 	}
 	else {
