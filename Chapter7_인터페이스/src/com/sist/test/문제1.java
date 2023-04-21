@@ -105,8 +105,21 @@ package com.sist.test;
 	
 
  */
+// A a = new B() ==> A클래스에 있는 데이터만 사용, **메소드는 변경(재정의)된 것만 사용
+// 하위클래스에서 추가된 메소드 , 변수 사용할 수 없다.
+// B b = new B()
+class A {
+	int a,b,c;
+	public void disp() {}
+} 
 public class 문제1 {
 	public static void main(String[] args) {
-		
+	A a = new B(); //이렇게 선언하면 A클래스에 있는 것만 사용이 가능
+	B b = (B)a;
+	
+	Object/*Object에 있는 것만 사용이 가능*/ o = new A(); //재정의 된것만 사용함
+	A e = (A)o;   //object는 모든 변수를 다 쓸수 있지만 라이브러리에 있는 것만 사용이 가능하므로 사용자 정의 클래스로 무조건 형변환을 시켜줘야한다.
+	//
+	
 	}
 }
