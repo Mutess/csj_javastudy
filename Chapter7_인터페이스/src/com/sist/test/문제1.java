@@ -115,7 +115,7 @@ package com.sist.test;
 public class 문제1 {
 	public static void main(String[] args) {
 	A a = new B(); //이렇게 선언하면 A클래스에 있는 것만 사용이 가능
-	B b = (B)a;
+	B b = (B)a;  //그래서 이렇게 묵시적형변환을 사용해야함
 	
 	Object/*Object에 있는 것만 사용이 가능*/ o = new A(); //재정의 된것만 사용함
 	A e = (A)o;   //object는 모든 변수를 다 쓸수 있지만 라이브러리에 있는 것만 사용이 가능하므로 사용자 정의 클래스로 무조건 형변환을 시켜줘야한다.
