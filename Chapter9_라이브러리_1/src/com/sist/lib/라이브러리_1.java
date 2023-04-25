@@ -21,7 +21,7 @@ package com.sist.lib;
  				= endsWith : 끝나는 문자열이 같은 경우
  					=> 오라클 : '%A'
  				= contains : 포함된 문자열(가장 많이 사용)
- 				 	=> 추천하기 가능
+ 				 	=> contains 사용시 추천하기 가능
  				 	=> 오라클 '%A%'
  			 	= replace : 문자나 문자열을 변경할 때
  			 		21.28.242.101
