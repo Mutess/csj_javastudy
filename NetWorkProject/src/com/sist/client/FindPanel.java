@@ -149,7 +149,7 @@ public class FindPanel extends JPanel implements ActionListener {
 			model.removeRow(i);
 		}
 		try {
-			List<TravelVO> list = ts.seoulCategoryData(1);
+			List<TravelVO> list = ts.seoulCategoryData(cno);
 			for (TravelVO vo : list) {
 				URL url = new URL(vo.getPoster());
 				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
