@@ -13,7 +13,7 @@ public class ControlPanel extends JPanel {
 	CardLayout card = new CardLayout();
 	public ControlPanel() {
 		setLayout(card);
-		add("Home", hp);  //순서대로 화면을 넣어야함
+		add("home", hp);  //순서대로 화면을 넣어야함
 		add("news", np);
 		add("chat", cp);
 		add("find", fp);

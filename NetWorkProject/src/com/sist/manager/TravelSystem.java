@@ -22,6 +22,29 @@ public class TravelSystem {
 		}
 	}
 	
+	public List<TravelVO> travelListData(int page) {
+		List<TravelVO> glist = new ArrayList<TravelVO>();
+		int j = 0; //20개씩 나눠주는 변슈
+		int rowsize = 20;
+		int start = (page - 1) * rowsize;
+		/*
+				1page => 0~19
+				2page => 20~39
+				
+				2page면 1page는 스킵
+		 */
+		for (int i = 0; i < list.size(); i++) {
+			if (j < rowsize && i>=start) {
+				glist.add(list.get(i));
+				j++;
+			}
+		}
+		return glist;
+	}
+	
+	public int travelTotalPage() {
+		return (int)(Math.ceil(list.size()/20.0));
+	}
 	public List<TravelVO> seoulCategoryData(int cno) {
 		List<TravelVO> slist = new ArrayList<TravelVO>();
 		for (TravelVO vo : list) {

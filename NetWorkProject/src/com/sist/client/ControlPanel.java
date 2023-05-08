@@ -15,7 +15,7 @@ public class ControlPanel extends JPanel {
 	CardLayout card = new CardLayout();
 	public ControlPanel() {
 		setLayout(card);
-		add("Home", hp);  //순서대로 화면을 넣어야함
+		add("home", hp);  //순서대로 화면을 넣어야함
 		add("location", lp);
 		add("enter", ep);
 		add("acomm", ap);

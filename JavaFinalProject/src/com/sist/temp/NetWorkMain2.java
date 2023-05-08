@@ -1,11 +1,20 @@
 package com.sist.temp;
-import java.awt.*;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import com.sist.common.ImageChange;
+import com.sist.manager.GenieMusicVO;
+import com.sist.manager.MusicSystem;
+
 public class NetWorkMain2 extends JFrame implements ActionListener {
 	MenuPanel mp;
 	ControlPanel cp;
@@ -13,6 +22,10 @@ public class NetWorkMain2 extends JFrame implements ActionListener {
 	JButton b1, b2,b3, b4, b5;
 	JLabel logo;
 	Login login = new Login();
+	//페이지 지정
+	int curpage = 1;
+	int totalpage = 0;
+	MusicSystem ms = new MusicSystem();
 	public NetWorkMain2() { //메모리 할당
 		logo = new JLabel();
 		Image img = ImageChange.getImage(new ImageIcon("C:\\java_datas\\logo.png"), 200, 130);
@@ -75,11 +88,19 @@ public class NetWorkMain2 extends JFrame implements ActionListener {
 		} catch (Exception ex) {}
 		new NetWorkMain2();
 	}
+	
+	public void musicDisplay() {
+		List<GenieMusicVO> list = ms.musicListData(curpage);
+		cp.hp.cardInit(list);
+		cp.hp.CardPrint(list);
+	}
+	
 	//버튼 처리
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == b1) {
+			musicDisplay();
 			cp.card.show(cp, "home");
 		}
 		else if(e.getSource() == b2) {

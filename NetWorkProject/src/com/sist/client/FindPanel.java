@@ -79,7 +79,8 @@ public class FindPanel extends JPanel implements ActionListener {
 		
 		js.setBounds(10, 100, 700, 600);
 		add(js);
-		
+		add(b1);
+		add(tf);
 		try {
 			List<TravelVO> list = ts.seoulCategoryData(1);
 			for (TravelVO vo : list) {
@@ -131,9 +132,9 @@ public class FindPanel extends JPanel implements ActionListener {
 		else if(e.getSource() == b7) {
 			findPrint(6);
 		}
-//		else if(e.getSource() == b8) {
-//			findPrint(7);
-//		}
+		else if(e.getSource() == b8) {
+			findPrint(7);
+		}
 		else if (e.getSource() == b1 || e.getSource() == tf) {  //검색버튼이나 엔터를 쳐도 되게 만둘
 			String title = tf.getText();
 			if (title.length() < 1) {
