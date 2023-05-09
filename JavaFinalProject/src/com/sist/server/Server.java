@@ -62,6 +62,7 @@ package com.sist.server;
 import java.util.*;
 
 import com.sist.common.Function;
+import com.sist.server.Server.Client;
 
 import java.net.*;
 import java.io.*;
@@ -177,7 +178,7 @@ public class Server implements Runnable{
 					//waitVc에 첨부
 					waitVc.add(this);
 					//로그인으 종료//main을 보여줌
-					messageTo(Function.MYLOG+"|"+name);
+					messageTo(Function.MYLOG+"|"+name+"|"+id);
 					//로그인하는 모든 사람들에게 전송
 					for (Client user : waitVc) {
 						messageTo(Function.LOGIN+"|"
@@ -194,6 +195,38 @@ public class Server implements Runnable{
 					messageAll(Function.CHAT+"|["+name+"]"+strMsg+"|"+color);
 					}
 				break;
+				case Function.INFO:{
+					String youId = st.nextToken();
+					for (Client user:waitVc) {
+						// 정보를 볼 대상을 찾는다.
+						/*
+							서버의 역할
+							1) 저장 (클라이언트 정보)
+								=> waitVc(Vector)
+							2) 검색 : ID, Name
+							3) 수정 : ID, PWD
+							4) 클라이언트러 전송기능
+							5) 요청에 처리 기능
+						 */
+						if (youId.equals(user.id)) {
+							messageTo(Function.INFO+"|"
+									+user.id+"|"
+									+user.name+"|"
+									+user.sex);
+							break;
+						}
+					}
+				}
+				case Function.MSGSEND: {
+					String youId = st.nextToken();
+					String strMsg = st.nextToken();
+					for (Client user : waitVc) {
+						if (youId.equals(user.id)) {
+							user.messageTo(Function.MSGSEND + "|" +id+"|"+strMsg);
+							break;
+							}
+						}
+					}
 				}
 			} catch (Exception e) {}
 			}

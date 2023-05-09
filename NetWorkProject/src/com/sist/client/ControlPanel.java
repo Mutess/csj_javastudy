@@ -9,11 +9,14 @@ public class ControlPanel extends JPanel {
 	ChatPanel cp = new ChatPanel();
 	FindPanel fp = new FindPanel();
 	LocationPanel lp = new LocationPanel();
-	HomePanel hp = new HomePanel();
+	HomePanel hp;
 	AcommPanel ap = new AcommPanel();
 	EnterPanel ep = new EnterPanel();
+	DetailPanel dp;
 	CardLayout card = new CardLayout();
 	public ControlPanel() {
+		hp = new HomePanel(this);
+		dp = new DetailPanel(this);
 		setLayout(card);
 		add("home", hp);  //순서대로 화면을 넣어야함
 		add("location", lp);
@@ -22,6 +25,7 @@ public class ControlPanel extends JPanel {
 		add("find", fp);
 		add("news", np);
 		add("chat", cp);
+		add("detail", dp);
 		
 		
 		

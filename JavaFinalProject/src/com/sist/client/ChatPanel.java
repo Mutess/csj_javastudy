@@ -15,10 +15,12 @@ import javax.swing.text.Document;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+
+import com.sist.inter.ChatInterface;
 /*
 		 750, 730
  */
-public class ChatPanel extends JPanel {
+public class ChatPanel extends JPanel implements ChatInterface {
 	JTextPane pane;
 	JTextField tf; //입력창
 	JButton b1, b2;
@@ -49,14 +51,21 @@ public class ChatPanel extends JPanel {
 		//테이블
 		String[] col = {"아이디", "이름", "성별"};
 		String[][] row = new String[0][3];
-		model = new DefaultTableModel(row,col);
+		model = new DefaultTableModel(row,col) {
+
+			@Override //익명의 클래스 => 상속없이 오버라이딩이 가능
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+		};
 		table = new JTable(model);
 		JScrollPane js2 = new JScrollPane(table);
 		b1 = new JButton("쪽지보내기");
 		b2 = new JButton("정보보기");
 		JPanel p = new JPanel();
-		p.add(b1);
-		p.add(b2);
+		p.add(b1); //쪽지
+		p.add(b2); //정보
 		// 배치
 		setLayout(null);
 		js1.setBounds(10, 15, 500, 600);
@@ -68,6 +77,8 @@ public class ChatPanel extends JPanel {
 		add(tf); add(box);
 		add(js2);
 		add(p);
+		b1.setEnabled(false); //비활성화
+		b2.setEnabled(false);
 //		String[] data = {"hong", "홍길동", "남자"};
 //		model.addRow(data);
 		// 이벤트

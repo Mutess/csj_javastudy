@@ -10,9 +10,10 @@ import java.net.*;
 import java.awt.event.*;
 
 import com.sist.common.ImageChange;
+import com.sist.inter.FindInterface;
 import com.sist.manager.*;
 import com.sist.manager.MusicSystem;
-public class FindPanel extends JPanel implements ActionListener {
+public class FindPanel extends JPanel implements ActionListener, FindInterface {
 	JTextField tf;
 	JButton b1;
 	JButton b2, b3, b4, b5, b6, b7;  //장르버튼

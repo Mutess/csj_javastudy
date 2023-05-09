@@ -10,12 +10,13 @@ import java.net.*;
 import java.awt.event.*;
 
 import com.sist.common.ImageChange;
+import com.sist.inter.FindInterface;
 import com.sist.manager.*;
 import com.sist.manager.TravelSystem;
-public class FindPanel extends JPanel implements ActionListener {
+public class FindPanel extends JPanel implements ActionListener, FindInterface {
 	JTextField tf;
 	JButton b1;
-	JButton b2, b3, b4, b5, b6, b7, b8;  //장르버튼
+	JButton b2, b3, b4, b5, b6, b7;  //장르버튼
 	JTable table;
 	DefaultTableModel model;
 	TravelSystem ts = new TravelSystem();
@@ -31,7 +32,6 @@ public class FindPanel extends JPanel implements ActionListener {
 		b5 = new JButton("쇼핑");
 		b6 = new JButton("음식");
 		b7 = new JButton("호텔");
-		b8 = new JButton("게하");
 		
 		
 		//첫번째는 이미지
@@ -56,7 +56,7 @@ public class FindPanel extends JPanel implements ActionListener {
 		};
 		table = new JTable(model);
 		//출력위치 길이 설정
-		table.setRowHeight(35); //타이틀바를 고정시키는 용도
+		table.setRowHeight(100); //타이틀바를 고정시키는 용도
 		table.getTableHeader().setReorderingAllowed(false); //이동을 못하게 만듦 
 		JScrollPane js = new JScrollPane(table);
 		
@@ -73,19 +73,20 @@ public class FindPanel extends JPanel implements ActionListener {
 		p.add(b5);
 		p.add(b6);
 		p.add(b7);
-		p.add(b8);
+
 		p.setBounds(10, 55, 700, 35);
 		add(p);
 		
 		js.setBounds(10, 100, 700, 600);
-		add(js);
-		add(b1);
 		add(tf);
+		add(b1);
+		add(p);
+		add(js);
 		try {
-			List<TravelVO> list = ts.seoulCategoryData(1);
+			List<TravelVO> list = ts.travelCategoryData(1);
 			for (TravelVO vo : list) {
 				URL url = new URL(vo.getPoster());
-				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
+				Image img = ImageChange.getImage(new ImageIcon(url), 150, 150);
 				Object[] data = {
 					new ImageIcon(img),
 					vo.getTitle(),
@@ -104,7 +105,6 @@ public class FindPanel extends JPanel implements ActionListener {
 		b5.addActionListener(this);
 		b6.addActionListener(this);
 		b7.addActionListener(this);
-		b8.addActionListener(this);
 		
 		tf.addActionListener(this);
 		
@@ -132,9 +132,7 @@ public class FindPanel extends JPanel implements ActionListener {
 		else if(e.getSource() == b7) {
 			findPrint(6);
 		}
-		else if(e.getSource() == b8) {
-			findPrint(7);
-		}
+
 		else if (e.getSource() == b1 || e.getSource() == tf) {  //검색버튼이나 엔터를 쳐도 되게 만둘
 			String title = tf.getText();
 			if (title.length() < 1) {
@@ -150,10 +148,10 @@ public class FindPanel extends JPanel implements ActionListener {
 			model.removeRow(i);
 		}
 		try {
-			List<TravelVO> list = ts.seoulCategoryData(cno);
+			List<TravelVO> list = ts.travelCategoryData(cno);
 			for (TravelVO vo : list) {
 				URL url = new URL(vo.getPoster());
-				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
+				Image img = ImageChange.getImage(new ImageIcon(url), 150, 150);
 				Object[] data = {
 					new ImageIcon(img),
 					vo.getTitle(),
@@ -169,10 +167,10 @@ public class FindPanel extends JPanel implements ActionListener {
 			model.removeRow(i);
 		}
 		try {
-			List<TravelVO> list = ts.seoulFindData(title);
+			List<TravelVO> list = ts.travelFindData(title);
 			for (TravelVO vo : list) {
 				URL url = new URL(vo.getPoster());
-				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
+				Image img = ImageChange.getImage(new ImageIcon(url), 150, 150);
 				Object[] data = {
 					new ImageIcon(img),
 					vo.getTitle(),

@@ -1,21 +1,28 @@
 package com.sist.client;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.List;
 import java.net.*;
 import javax.swing.*;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 
+import com.sist.common.ImageChange;
+import com.sist.inter.HomeInterface;
+import com.sist.manager.TravelSystem;
 import com.sist.manager.TravelVO;
 
-public class HomePanel extends JPanel {
+public class HomePanel extends JPanel implements HomeInterface, MouseListener {
 	PosterCard[] pcs = new PosterCard[20];
 	JPanel pan = new JPanel();
 	JButton b1, b2;
 	JLabel pageLa;
-	public HomePanel() {
+	ControlPanel cp;
+	TravelSystem ts = new TravelSystem();
+	
+	public HomePanel(ControlPanel cp) {
+		this.cp = cp;
 		b1 = new JButton("이전");
 		b2 = new JButton("다음");
 		pageLa = new JLabel("0 page / 0 page");
@@ -38,7 +45,9 @@ public class HomePanel extends JPanel {
 			pan.add(pcs[i]);
 			i++;
 		}
-		
+		for (int j = 0; j<pcs.length;j++) {
+			pcs[j].addMouseListener(this);
+		}
 	}
 	public void cardInit(List<TravelVO> list) {
 //		for (int i = 0; i <list.size(); i++) {
@@ -47,5 +56,50 @@ public class HomePanel extends JPanel {
 //		}
 		pan.removeAll(); // 데이터 제거
 		pan.validate();  // Panel 재배치
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i<pcs.length; i++) {
+			if(e.getSource() == pcs[i]) {
+//				JOptionPane.showMessageDialog(this, i+"번째 호출");
+				String title = pcs[i].tLa.getText();
+//				JOptionPane.showMessageDialog(this, title);
+				TravelVO vo = ts.travelDetailData(title);
+				try {
+					URL url = new URL(vo.getPoster());
+					Image img = ImageChange.getImage(new ImageIcon(url), 530, 350);
+					cp.dp.imgLa.setIcon(new ImageIcon(img));
+					cp.dp.titleLa.setText(vo.getTitle());
+					cp.dp.contentLa.setText(vo.getContents());
+					cp.card.show(cp, "detail");
+				} catch (Exception e2) {}
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

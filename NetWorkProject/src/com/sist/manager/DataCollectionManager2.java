@@ -49,7 +49,7 @@ public class DataCollectionManager2 {
             int c =1;
             int cg=0;
 
-            String [] urls2 = {"attractions","nature","entertainment","shopping","restaurants","hotels","seoul-stay"};
+            String [] urls2 = {"attractions","nature","entertainment","shopping","restaurants","hotels"};
 
 
 
@@ -59,7 +59,7 @@ public class DataCollectionManager2 {
 
                 String pages = "https://korean.visitseoul.net/"+urls2[i]+"?curPage=";
                 ++cg;
-                for(int j = 1 ; j <= 5; j++) {
+                for(int j = 1 ; j <= 7; j++) {
 
                     String url = pages;
 
@@ -109,7 +109,7 @@ public class DataCollectionManager2 {
 
                         String posterUrl="";
 
-                        if(!url.contains("hotels") && !url.contains("seoul-stay")){
+                        if(!url.contains("hotels")){
 
                             String str = poster.get(k).attr("style");
 

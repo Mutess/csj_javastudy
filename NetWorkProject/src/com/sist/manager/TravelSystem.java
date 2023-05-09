@@ -45,19 +45,17 @@ public class TravelSystem {
 	public int travelTotalPage() {
 		return (int)(Math.ceil(list.size()/20.0));
 	}
-	public List<TravelVO> seoulCategoryData(int cno) {
+	public List<TravelVO> travelCategoryData(int cno) {
 		List<TravelVO> slist = new ArrayList<TravelVO>();
 		for (TravelVO vo : list) {
 			if (vo.getCno() == cno) {
-				if (vo.getCno() == cno) {
 					slist.add(vo);
 					//System.out.println(vo.getNo()+"."+vo.getTitle());
-				}
 			}
 		}
 		return slist;
 	}
-	public List<TravelVO> seoulFindData(String title) {
+	public List<TravelVO> travelFindData(String title) {
 		List<TravelVO> slist = new ArrayList<TravelVO>();
 		for (TravelVO vo : list) {
 			if (vo.getTitle().contains(title)) {
@@ -66,13 +64,23 @@ public class TravelSystem {
 		}
 		return slist;
 	}
+	public TravelVO travelDetailData(String title) {
+		TravelVO vo = new TravelVO();
+		for (TravelVO gvo:list) {
+			if (gvo.getTitle().equals(title)) {
+				vo = gvo;
+				break;
+			}
+		}
+		return vo;
+	}
 	public static void main(String[] args) {
 		TravelSystem ts = new TravelSystem();
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("가요(1), POP(2), OST(3), 트롯(4), JAZZ(5), CLASSIC(6) : ");
+			System.out.println("(1), (2), (3), (4), (5), (6) : ");
 			String cno = in.readLine();
-			ts.seoulCategoryData(Integer.parseInt(cno)-1);
+			ts.travelCategoryData(Integer.parseInt(cno)-1);
 		} catch (Exception e) {}
 	}
 }

@@ -1,7 +1,10 @@
 package com.sist.client;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.*;
@@ -13,7 +16,7 @@ import com.sist.manager.TravelSystem;
 import java.util.StringTokenizer;
 import java.io.*;
 import java.net.*;
-public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
+public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, MouseListener {
 	MenuPanel mp;
 	ControlPanel cp;
 	TopPanel tp;
@@ -24,23 +27,31 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 	int curpage = 1;
 	int totalpage = 0;
 	TravelSystem ts = new TravelSystem();
+	
 	Socket s; //서버의 메모리 연결
 	//서버에서 보내준 값을 받는다.
 	BufferedReader in;
 	//서버로 갓을 전송
 	OutputStream out;
+	//ID저장
+	String MyId;
+	//테이블 선택 인덱스 번호
+	int selectRow = -1; //선택이 안됐을때
+	//쪽지보내기
+	SendMessage sm = new SendMessage();
+	RecvMessage rm = new RecvMessage();
 	public NetWorkMain2() { //메모리 할당
 		logo = new JLabel();
-		Image img = ImageChange.getImage(new ImageIcon("C:\\java_datas\\lg1.png"), 200, 130);
+		Image img = ImageChange.getImage(new ImageIcon("C:\\java_datas\\lg3.png"), 300, 300);
 		logo.setIcon(new ImageIcon(img));
 		mp = new MenuPanel();
 		cp = new ControlPanel();
 		tp = new TopPanel();
 		
 		setLayout(null); //Layout을 직접 배치한다는 뜻
-		logo.setBounds(10, 15, 200, 130);
+		logo.setBounds(-30, 0, 220, 130);
 		mp.setBounds(220, 50, 600, 50); // mp 여기다가 추가
-		cp.setBounds(10, 150, 900, 800);
+		cp.setBounds(100, 150, 900, 800);
 		tp.setBounds(1000, 75, 200, 800);
 		
 		b1 = new JButton("홈");
@@ -65,7 +76,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 		add(tp);
 		add(logo);
 		
-		setSize(1400, 1050);
+		setSize(1250, 950);
 //		setVisible(true);
 		
 		//종료
@@ -98,6 +109,15 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 		cp.hp.pageLa.setText(curpage+"page /" + totalpage +"pages");
 		//화면
 		//travelDisplay();
+		cp.cp.b1.addActionListener(this);
+		cp.cp.b2.addActionListener(this);
+		cp.cp.table.addMouseListener(this);
+		
+		//쪽지보내기
+		sm.b1.addActionListener(this);
+		sm.b2.addActionListener(this);
+		rm.b1.addActionListener(this);
+		rm.b2.addActionListener(this);
 		
 		
 	}
@@ -200,8 +220,12 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 			if (msg.length()<1) {
 				return;
 			}
-			cp.cp.append(msg, color);
-			
+//			cp.cp.append(msg, color);
+//			
+//			cp.cp.tf.setText("");
+		try {
+				out.write((Function.CHAT+"|"+msg+"|"+color+"\n").getBytes());
+			} catch (Exception e2) {}
 			cp.cp.tf.setText("");
 		}
 		else if(e.getSource() == cp.hp.b1) {
@@ -215,6 +239,55 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 				curpage++;
 				travelDisplay();
 			}
+		}
+		else if (e.getSource()==cp.cp.b2) {
+			//정보보기
+			if (selectRow == -1) {
+				JOptionPane.showMessageDialog(this, "정보을 볼 대상을 선택하세요");
+				return;
+			}
+			//선택이 된 경우
+			String youId = cp.cp.table.getValueAt(selectRow, 0).toString();
+			try {
+				//선택된 아이디의 정보를 보여달라 (서버의 요청)
+				out.write((Function.INFO + "|" + youId+"\n").getBytes());
+				// out.write => 서버에 요청 ==> ** 마지막에 \n을 반드시 포함
+				// 처리 => 서버 => 결과값을 받아서 클라이언트에서 출력
+			} catch (Exception ex) {}
+		}
+		else if (e.getSource()==cp.cp.b1) {
+			//쪽지보내기
+			sm.ta.setText("");
+			String youId = cp.cp.table.getValueAt(selectRow, 0).toString();
+			sm.tf.setText(youId);
+			sm.setVisible(true);
+		}
+		//쪽지보내기 관련
+		else if (e.getSource()==sm.b2) {
+			sm.setVisible(false);
+		}
+		else if (e.getSource()== rm.b2) {
+			rm.setVisible(false);
+		}
+		else if (e.getSource() == sm.b1) {
+			String youId = sm.tf.getText();
+			String msg = sm.ta.getText();
+			if (msg.length()<1) {
+				sm.ta.requestFocus();
+				return;
+			}
+			try {
+				out.write((Function.MSGSEND+"|"
+						 + youId + "|"+msg + "\n").getBytes());
+			} catch (Exception e2) {}
+			//창을 감춤
+			sm.setVisible(false);
+		}
+		else if (e.getSource() == rm.b1) {
+			sm.tf.setText(rm.tf.getText());
+			sm.ta.setText("");
+			sm.setVisible(true);
+			rm.setVisible(true);
 		}
 	}
 
@@ -241,6 +314,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 			break;
 			case Function.MYLOG:{
 				setTitle(st.nextToken());
+				MyId=st.nextToken();
 				login.setVisible(false);
 				setVisible(true);
 			}
@@ -251,8 +325,65 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 							// 채팅 문자열		 색상
 			}
 			break;
+			case Function.INFO:{
+				String data = "아이디 : "+st.nextToken()+"\n"
+							+ "이름 : "+st.nextToken()+"\n"
+							+ "성별 : "+st.nextToken();
+				JOptionPane.showMessageDialog(this, data);
+			}
+			break;
+			case Function.MSGSEND:{
+				String id = st.nextToken();
+				String strMsg = st.nextToken();
+				rm.tf.setText(id);
+				rm.ta.setText(strMsg);
+				rm.setVisible(true);
+				}
 			}		
 		}
 	} catch (Exception ex) {}
+}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == cp.cp.table) {
+				selectRow = cp.cp.table.getSelectedRow();
+				String id = cp.cp.table.getValueAt(selectRow, 0).toString();
+//				JOptionPane.showMessageDialog(this, id);
+				if (id.equals(MyId)) {
+					cp.cp.b1.setEnabled(false);
+					cp.cp.b2.setEnabled(false);
+				}
+				else {
+					cp.cp.b1.setEnabled(true);
+					cp.cp.b2.setEnabled(true);
+				}
+			}
+		}
+	
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

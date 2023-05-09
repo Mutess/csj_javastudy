@@ -4,6 +4,8 @@ import java.awt.Image;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
@@ -11,6 +13,8 @@ import com.sist.common.Function;
 import com.sist.common.ImageChange;
 import com.sist.manager.GenieMusicVO;
 import com.sist.manager.MusicSystem;
+import com.sist.server.ClientMain;
+
 // 네트워크 관련 import
 import java.util.List;
 import java.util.StringTokenizer;
@@ -22,7 +26,7 @@ import java.net.*;
 		1 로그인, 채팅문자여 입력 ... 일반 사용자
 		2 서버에서 전송되는 데이터 출력
  */
-public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
+public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, MouseListener {
 	MenuPanel mp;
 	ControlPanel cp;
 	TopPanel tp;
@@ -40,6 +44,13 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 	BufferedReader in;
 	//서버로 갓을 전송
 	OutputStream out;
+	//ID저장
+	String MyId;
+	//테이블 선택 인덱스 번호
+	int selectRow = -1; //선택이 안됐을때
+	//쪽지보내기
+	SendMessage sm = new SendMessage();
+	RecvMessage rm = new RecvMessage();
 	public NetWorkMain2() { //메모리 할당
 		logo = new JLabel();
 		Image img = ImageChange.getImage(new ImageIcon("C:\\java_datas\\logo.png"), 200, 130);
@@ -103,8 +114,18 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 		cp.hp.b2.addActionListener(this); //다음
 		cp.hp.pageLa.setText(curpage+"page /" + totalpage +"pages");
 		
+		cp.cp.b1.addActionListener(this);
+		cp.cp.b2.addActionListener(this);
+		cp.cp.table.addMouseListener(this);
+		
+		//쪽지보내기
+		sm.b1.addActionListener(this);
+		sm.b2.addActionListener(this);
+		rm.b1.addActionListener(this);
+		rm.b2.addActionListener(this);
+		
 		//화면
-		musicDisplay();
+		//musicDisplay();
 	}
 
 	public static void main(String[] args) {
@@ -121,6 +142,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 		cp.hp.CardPrint(list);
 		totalpage=ms.musicTotalPage();
 		cp.hp.pageLa.setText(curpage+"page /" + totalpage +"pages");
+		
 	}
 	
 	//버튼 처리
@@ -170,7 +192,8 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 			
 			try {
 				//서버연결
-				s = new Socket("211.238.142.118", 3456);
+				s = new Socket("localhost", 3456);
+//				s = new Socket("211.238.142.118", 3456);
 				//서버 컴퓨터
 				// 211.238.142.()
 				//읽는 위치 / 쓰는 위치
@@ -210,6 +233,55 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 				musicDisplay();
 			}
 		}
+		else if (e.getSource()==cp.cp.b2) {
+			//정보보기
+			if (selectRow == -1) {
+				JOptionPane.showMessageDialog(this, "정보을 볼 대상을 선택하세요");
+				return;
+			}
+			//선택이 된 경우
+			String youId = cp.cp.table.getValueAt(selectRow, 0).toString();
+			try {
+				//선택된 아이디의 정보를 보여달라 (서버의 요청)
+				out.write((Function.INFO + "|" + youId+"\n").getBytes());
+				// out.write => 서버에 요청 ==> ** 마지막에 \n을 반드시 포함
+				// 처리 => 서버 => 결과값을 받아서 클라이언트에서 출력
+			} catch (Exception ex) {}
+		}
+		else if (e.getSource()==cp.cp.b1) {
+			//쪽지보내기
+			sm.ta.setText("");
+			String youId = cp.cp.table.getValueAt(selectRow, 0).toString();
+			sm.tf.setText(youId);
+			sm.setVisible(true);
+		}
+		//쪽지보내기 관련
+		else if (e.getSource()==sm.b2) {
+			sm.setVisible(false);
+		}
+		else if (e.getSource()== rm.b2) {
+			rm.setVisible(false);
+		}
+		else if (e.getSource() == sm.b1) {
+			String youId = sm.tf.getText();
+			String msg = sm.ta.getText();
+			if (msg.length()<1) {
+				sm.ta.requestFocus();
+				return;
+			}
+			try {
+				out.write((Function.MSGSEND+"|"
+						 + youId + "|"+msg + "\n").getBytes());
+			} catch (Exception e2) {}
+			//창을 감춤
+			sm.setVisible(false);
+		}
+		else if (e.getSource() == rm.b1) {
+			sm.tf.setText(rm.tf.getText());
+			sm.ta.setText("");
+			sm.setVisible(true);
+			rm.setVisible(true);
+		}
 	}
 	// 서버에서 결과값을 받아서 출력하는 위치 => 스레드 (자동화)
 	// member.jsp?id=sss&pwd=134&name=dadsa
@@ -238,6 +310,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 				break;
 				case Function.MYLOG:{
 					setTitle(st.nextToken());
+					MyId = st.nextToken();
 					login.setVisible(false);
 					setVisible(true);
 				}
@@ -248,8 +321,67 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable {
 								// 채팅 문자열		 색상
 				}
 				break;
-				}		
+				case Function.INFO:{
+					String data = "아이디 : "+st.nextToken()
+								+ "이름 : "+st.nextToken()
+								+ "성별 : "+st.nextToken();
+					JOptionPane.showMessageDialog(this, data);
+				}
+				break;
+				case Function.MSGSEND:{
+					String id = st.nextToken();
+					String strMsg = st.nextToken();
+					rm.tf.setText(id);
+					rm.ta.setText(strMsg);
+					rm.setVisible(true);
+				}
+			}		
+		}
+	} catch (Exception ex) {}
+}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == cp.cp.table) {
+//			if(e.getClickCount() == 2) { //더블클릭
+			
+				selectRow = cp.cp.table.getSelectedRow();
+				String id = cp.cp.table.getValueAt(selectRow, 0).toString();
+//				JOptionPane.showMessageDialog(this, "선택된 ID : "+id);
+				if (id.equals(MyId)) {
+					cp.cp.b1.setEnabled(false);
+					cp.cp.b2.setEnabled(false);
+				}
+				else {
+					cp.cp.b1.setEnabled(true);
+					cp.cp.b2.setEnabled(true);
+				}
 			}
-		} catch (Exception ex) {}
+		}
+//	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

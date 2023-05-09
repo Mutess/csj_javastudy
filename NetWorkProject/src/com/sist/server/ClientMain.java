@@ -83,8 +83,8 @@ public class ClientMain extends JFrame implements ActionListener, Runnable {
 		add(tf); add(box);
 		add(js2);
 		add(p);
-		String[] data = {"hong", "홍길동", "남자"};
-		model.addRow(data);
+//		String[] data = {"hong", "홍길동", "남자"};
+//		model.addRow(data);
 		// 이벤트
 		setSize(790, 700);
 		setVisible(true);
@@ -145,7 +145,7 @@ public class ClientMain extends JFrame implements ActionListener, Runnable {
 		// TODO Auto-generated method stub
 		if (e.getSource() == b1) {
 			try {
-				s = new Socket("localhost", 3456);
+				s = new Socket("211.238.142.118", 3456);
 				in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 				out = s.getOutputStream();
 			} catch (Exception e2) {}
