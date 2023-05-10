@@ -72,7 +72,7 @@ public class HomePanel extends JPanel implements HomeInterface, MouseListener {
 					Image img = ImageChange.getImage(new ImageIcon(url), 530, 350);
 					cp.dp.imgLa.setIcon(new ImageIcon(img));
 					cp.dp.titleLa.setText(vo.getTitle());
-					cp.dp.contentLa.setText(vo.getContents());
+					cp.dp.contentsTa.setText(vo.getContents());
 					cp.card.show(cp, "detail");
 				} catch (Exception e2) {}
 			}

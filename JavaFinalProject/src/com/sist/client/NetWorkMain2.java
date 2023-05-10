@@ -25,12 +25,73 @@ import java.net.*;
 		프로그램 => 2개
 		1 로그인, 채팅문자여 입력 ... 일반 사용자
 		2 서버에서 전송되는 데이터 출력
+		
+		웹에서 필요한 기술
+		=> 데이터베이스 (오라클 => MySQL)
+		   ------------------------- MyBatis / JPA
+		=> 데이터베이스 제어 => 자바
+		   자바
+		   	클래스 개념 			/ 인터페이스 / 예외처리 / 라이브러리
+		   	-------- 			  -------
+		변수 / 메소드 / 생성자		요구사항 분석 (기능)
+		
+		   	java.lang
+		   		Object / String / StringBuffer / Math / Wrapper
+		   		
+		   	java.util
+		   		StringTokenizer / Date, Calendar
+		   		Collection => ArrayList , HashMap , HashSet
+		   		
+		   	java.net
+		   		URL, URLEnceder
+		   		
+		   	java.io
+		   		웹 => 업로드 , 다운로드 (File)
+		   		=> Buffered~
+		   		FileInputStream / FileOutputStream
+		   		FileReader / FileWriter	
+		   		BufferedReader / File
+		   		
+		   	java.text
+		   	 	SimpleDateFormat
+		-------------------------------------------------------
+		   2차 자바
+		   	java.sql , javax.sql , javax.naming
+		   	javax.servlet.*
+		   	
+		   	브라우저 ============== 자바 ============== 오라클
+		   											----- 데이터를 저장
+		   	윈도우  ============== 자바 ============== 파일
+		   						 --- 데이터읽기 / 데이터전송
+		   						 
+		   	=> 1) 오라클 제어 
+		   		CREATE / ALTER / DROP / TRUNCATE / RENAME = DDL
+		   		---------------------------------  데이터 정의어
+		   		SELECT / UPDATE / DELETE / INSERT => DML
+		   		--------------------------------- 데이터 조작어
+		   		GRANT / REVOKE
+		   		--------------- DCL (admin)
+		   		COMMIT / ROLLBACK 
+		   		----------------- TCL (일괄처리)
+		   		
+		   		2) 기타 : VIEW / SEQUEUE / PS-SQL(FUNTCION, PROCEDUR, TRIGGER)
+		   		3) 데이터베이스 모델링 (정규화, 제약조건)
+		   	=> 브라우저에 데이터 출력 : HTML / CSS / JavaScript
+		   	=> 자바스크립트 라이브러리 : JQuery / Ajax
+		   						  -------------- 교재 (동영상)
+		  ---------------------------------------------- 1차 프로젝트
+		  Spring (Back-End) / VueJS (Front-End)
+		  -------------------------------------- 2차 프로젝트 (조별)
+		  Spring-Boot / My-SQL / ReactJS / JPA
+		  -------------------------------------- 3차 프로젝트
+		  AWS => 호스팅
+		  -------------------------------------- 이력서 첨부 (입사)
  */
 public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, MouseListener {
 	MenuPanel mp;
 	ControlPanel cp;
 	TopPanel tp;
-	JButton b1, b2,b3, b4, b5;
+	JButton b1, b2,b3, b4, b5, b6;
 	JLabel logo;
 	Login login = new Login();
 	//페이지 지정
@@ -71,13 +132,15 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 		b2 = new JButton("음악검색");
 		b3 = new JButton("채팅");
 		b4 = new JButton("뉴스검색");
-		b5 = new JButton("음악추천");
-		mp.setLayout(new GridLayout(5,1,10,10));
+		b5 = new JButton("커뮤니티"); //CRUD
+		b6 = new JButton("나가기");
+		mp.setLayout(new GridLayout(6,1,10,10));
 		mp.add(b1);
 		mp.add(b2);
 		mp.add(b3);
 		mp.add(b4);
 		mp.add(b5);
+		mp.add(b6);
 		
 		//추가
 		add(mp);
@@ -89,7 +152,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 //		setVisible(true);
 		
 		//종료
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		//타이틀
 		setTitle("네트워크 뮤직 프로그램");
 		
@@ -99,6 +162,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 		b3.addActionListener(this);
 		b4.addActionListener(this);
 		b5.addActionListener(this);
+		b6.addActionListener(this);
 		//로그인
 		login.b1.addActionListener(this);  //처리 메소드는 Main이라서 this
 		login.b2.addActionListener(this);
@@ -164,7 +228,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 			cp.card.show(cp, "news");
 		}
 		else if(e.getSource() == b5) {
-			cp.card.show(cp, "recomm");
+			cp.card.show(cp, "board");
 		}
 		else if (e.getSource() == login.b1) {
 //			login.setVisible(false); //로그인이 되면 
@@ -280,7 +344,12 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 			sm.tf.setText(rm.tf.getText());
 			sm.ta.setText("");
 			sm.setVisible(true);
-			rm.setVisible(true);
+			rm.setVisible(false);
+		}
+		else if(e.getSource()==b6) {
+			try {
+				out.write((Function.EXIT+"|"+MyId+"\n").getBytes());
+			} catch (Exception e2) {}
 		}
 	}
 	// 서버에서 결과값을 받아서 출력하는 위치 => 스레드 (자동화)
@@ -335,6 +404,23 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 					rm.ta.setText(strMsg);
 					rm.setVisible(true);
 				}
+				break;
+				case Function.MYEXIT:{
+					dispose(); //윈도우 메모리 해제
+					System.exit(0); //프로그램 종료
+				}
+				break;
+				case Function.EXIT: {
+					String mid = st.nextToken();
+					for (int i = 0; i<cp.cp.model.getRowCount();i++) {
+						String uid = cp.cp.table.getValueAt(i, 0).toString();
+						if (mid.equals(uid)) {
+							cp.cp.model.removeRow(i);
+							break;
+						}
+					}
+				}
+				break;
 			}		
 		}
 	} catch (Exception ex) {}

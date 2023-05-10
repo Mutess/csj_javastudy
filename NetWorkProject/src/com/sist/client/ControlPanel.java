@@ -13,10 +13,21 @@ public class ControlPanel extends JPanel {
 	AcommPanel ap = new AcommPanel();
 	EnterPanel ep = new EnterPanel();
 	DetailPanel dp;
+	BoardListPanel bp;
+	BoardInsertPanel ip;
+	BoardDetailPanel bdp;
+	BoardUpdatePanel bup;
+	BoardDeletePanel bdelp;
+	
 	CardLayout card = new CardLayout();
 	public ControlPanel() {
 		hp = new HomePanel(this);
 		dp = new DetailPanel(this);
+		bp = new BoardListPanel(this);
+		ip = new BoardInsertPanel(this);
+		bdp = new BoardDetailPanel(this);
+		bup=new BoardUpdatePanel(this);
+    	bdelp=new BoardDeletePanel(this);
 		setLayout(card);
 		add("home", hp);  //순서대로 화면을 넣어야함
 		add("location", lp);
@@ -26,6 +37,10 @@ public class ControlPanel extends JPanel {
 		add("news", np);
 		add("chat", cp);
 		add("detail", dp);
+		add("board", bp);
+		add("bdp", bdp);
+		add("bup",bup);
+    	add("delete",bdelp);
 		
 		
 		

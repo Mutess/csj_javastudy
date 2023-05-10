@@ -21,7 +21,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 	JLabel imgLa;
 	JLabel la1, la2, la3;
 	JButton b2; //동영상 //우리는 없어도 됨
-	JLabel titleLa, contentLa, posterLa;
+	JLabel titleLa, posterLa;
+	JTextPane contentsTa;
 	ControlPanel cp;
 	public DetailPanel(ControlPanel cp) {
 		this.cp=cp;
@@ -33,7 +34,9 @@ public class DetailPanel extends JPanel implements ActionListener {
 //		la3 = new JLabel("");
 		b2 = new JButton("목록");
 		titleLa = new JLabel("");
-		contentLa = new JLabel("");
+		contentsTa=new JTextPane();
+		contentsTa.setEnabled(false);
+		JScrollPane js=new JScrollPane(contentsTa);
 //		posterLa = new JLabel("");
 //		albumLa = new JLabel("");
 //		stateLa = new JLabel("");
@@ -49,7 +52,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		titleLa.setBounds(165, 375, 300, 40);
 		
 		la2.setBounds(100, 425, 60, 40);
-		contentLa.setBounds(165, 425, 300, 40);
+		contentsTa.setBounds(165, 425, 500, 100);
 		
 //		la3.setBounds(100, 475, 60, 40);
 //		posterLa.setBounds(165, 475, 300, 40);
@@ -62,7 +65,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		//윈도우에 추가
 		add(imgLa);
 		add(la1); add(titleLa);
-		add(la2); add(contentLa);
+		add(la2); add(contentsTa);
 //		add(la3); add(posterLa);
 		add(p);
 		
