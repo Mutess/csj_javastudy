@@ -90,8 +90,8 @@ public class BoardListPanel extends JPanel implements ActionListener, MouseListe
 		
 		//이벤트 등록
 		b1.addActionListener(this);
-		b1.addActionListener(this);
-		b1.addActionListener(this);
+		b2.addActionListener(this);
+		b3.addActionListener(this);
 		
 		table.addMouseListener(this);
 	}

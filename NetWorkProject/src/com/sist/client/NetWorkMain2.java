@@ -22,10 +22,12 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 	TopPanel tp;
 	JLabel logo;
 	JButton b1, b2,b3, b4, b5, b6 , b7, b8, b9;
+	JLabel ccp;
 	Login login = new Login();
 	//페이지 지정
 	int curpage = 1;
 	int totalpage = 0;
+
 	TravelSystem ts = new TravelSystem();
 	
 	Socket s; //서버의 메모리 연결
@@ -53,8 +55,7 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 		mp.setBounds(220, 50, 600, 50); // mp 여기다가 추가
 		cp.setBounds(100, 150, 750, 800);
 		tp.setBounds(900, 75, 250, 800);
-		
-		
+
 		
 		b1 = new JButton("홈");
 //		b2 = new JButton("장소");
@@ -211,8 +212,8 @@ public class NetWorkMain2 extends JFrame implements ActionListener, Runnable, Mo
 			
 			try {
 				//서버연결
-				s = new Socket("211.238.142.118", 3456);
-//				s = new Socket("localhost", 3456);
+//				s = new Socket("211.238.142.118", 3456);
+				s = new Socket("localhost", 3456);
 				//서버 컴퓨터
 				// 211.238.142.()
 				//읽는 위치 / 쓰는 위치

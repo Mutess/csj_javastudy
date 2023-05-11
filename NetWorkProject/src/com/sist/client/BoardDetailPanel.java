@@ -85,9 +85,8 @@ public class BoardDetailPanel extends JPanel implements ActionListener{
 		add(p);
 		
 		b3.addActionListener(this);
-		
-		
-		
+  	    b2.addActionListener(this);
+  	    b1.addActionListener(this);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

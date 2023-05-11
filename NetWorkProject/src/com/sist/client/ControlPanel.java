@@ -38,6 +38,7 @@ public class ControlPanel extends JPanel {
 		add("chat", cp);
 		add("detail", dp);
 		add("board", bp);
+		add("insert", ip);
 		add("bdp", bdp);
 		add("bup",bup);
     	add("delete",bdelp);
